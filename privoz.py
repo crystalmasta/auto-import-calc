@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+
 # --- БЛОК АВТОРИЗАЦИИ ---
 def check_password():
     """Проверяет правильность введенного пароля."""
@@ -39,10 +40,19 @@ def check_password():
 # Если пароль не введен или неверен - останавливаем отрисовку остального приложения
 if not check_password():
     st.stop()
+
+# ==========================================
+# ДАЛЬШЕ ИДЕТ ВАШ ОСНОВНОЙ КОД КАЛЬКУЛЯТОРА
+# ==========================================
+
+# Кэшируем запрос к ЦБ...
+# (здесь весь остальной код из прошлого ответа)
+
 # Кэшируем запрос к ЦБ, чтобы не дергать сайт при каждом нажатии кнопок
 @st.cache_data(ttl=3600)
 def fetch_cbr_rates():
-    url = "https://www.cbr.ru/scripts/XML_daily.asp"
+    # Замените на это:
+    url = "https://www.cbr-xml-daily.ru/daily_utf8.xml"
     try:
         df = pd.read_xml(url, encoding='cp1251')
         df['Value'] = df['Value'].astype(str).str.replace(',', '.').astype(float)
